@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HandyHub Ghana - Connect with Local Artisans</title>
+  
+  <!-- Apple Home Screen Icon (Ghana Flag) -->
+  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Ghana.svg/512px-Flag_of_Ghana.svg.png">
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Ghana.svg/512px-Flag_of_Ghana.svg.png">
+  
+  <!-- iOS Full Screen PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="HandyHub GH">
+
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0f172a;
+      color: #1e293b;
+      touch-action: manipulation;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .active-tab {
+      color: #065f46 !important;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 flex justify-center items-center min-h-screen sm:p-4 antialiased">
+
+  <!-- Mobile Container -->
+  <div class="w-full max-w-md bg-slate-50 min-h-screen sm:min-h-[844px] sm:max-h-[844px] sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col relative border-0 sm:border-[8px] sm:border-slate-800">
+
+    <!-- Top Header -->
+    <header class="bg-emerald-900 text-white px-5 pt-10 pb-4 sticky top-0 z-30 shadow-md">
+      <div class="flex justify-between items-center mb-3">
+        <div class="flex items-center space-x-2 cursor-pointer" onclick="switchPage('home')">
+          <div class="bg-amber-400 p-2 rounded-xl text-emerald-950 font-black tracking-wider text-sm flex items-center gap-1 shadow">
+            <i data-lucide="wrench" class="w-4 h-4"></i>
+            HH
+          </div>
+          <div>
+            <h1 class="text-lg font-bold leading-none tracking-tight">HandyHub <span class="text-amber-400 text-xs px-1.5 py-0.5 rounded bg-emerald-800 font-extrabold">GH</span></h1>
+            <p class="text-[11px] text-emerald-200 mt-0.5">Trusted Ghana Artisans</p>
+          </div>
+        </div>
+
+        <!-- Role Toggle -->
+        <div class="bg-emerald-950/80 p-1 rounded-full flex text-xs font-semibold border border-emerald-700/50">
+          <button id="toggle-customer" onclick="setRole('customer')" class="px-3 py-1 rounded-full bg-amber-400 text-emerald-950 shadow transition-all duration-200">Customer</button>
+          <button id="toggle-artisan" onclick="setRole('artisan')" class="px-3 py-1 rounded-full text-emerald-200 hover:text-white transition-all duration-200">Artisan</button>
+        </div>
+      </div>
+
+      <!-- Location Bar -->
+      <div onclick="showAlert('Location selector opening... (Accra Central selected)')" class="flex items-center justify-between bg-emerald-800/60 rounded-xl px-3 py-2 text-xs border border-emerald-700/40 cursor-pointer active:scale-95 transition-transform">
+        <div class="flex items-center gap-1.5 text-emerald-100">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span class="font-medium">Accra Central, Greater Accra</span>
+          <i data-lucide="chevron-down" class="w-3 h-3 text-emerald-300"></i>
+        </div>
+        <div class="flex items-center gap-1 text-[10px] text-amber-300 font-medium">
+          <i data-lucide="shield-check" class="w-3 h-3"></i>
+          Verified
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Main Content Views -->
+    <main class="flex-1 overflow-y-auto no-scrollbar pb-24">
+
+      <!-- PAGE: HOME -->
+      <div id="page-home" class="page-view p-4 space-y-5">
+        
+        <!-- Hero Search Box -->
+        <div class="bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-amber-400/10 rounded-full blur-xl"></div>
+          <h2 class="text-base font-bold mb-1">Need a trusted technician today?</h2>
+          <p class="text-xs text-emerald-200 mb-3">Verified artisans backed by MoMo Escrow Protection.</p>
+          
+          <button onclick="switchPage('artisans')" class="w-full bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform">
+            <span>Find Nearest Artisan</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Category Grid -->
+        <div>
+          <div class="flex justify-between items-center mb-2.5">
+            <h3 class="text-sm font-bold text-slate-800">Popular Trades</h3>
+            <span onclick="switchPage('artisans')" class="text-xs text-emerald-700 font-semibold cursor-pointer">View All</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2.5">
+            <div onclick="selectTrade('Plumber')" class="flex flex-col items-center p-2.5 bg-white rounded-xl shadow-sm border border-slate-100 cursor-pointer active:scale-95 transition-transform">
+              <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-1">
+                <i data-lucide="droplet" class="w-5 h-5"></i>
+              </div>
+              <span class="text-[11px] font-medium text-slate-700">Plumber</span>
+            </div>
+
+            <div onclick="selectTrade('Carpenter')" class="flex flex-col items-center p-2.5 bg-white rounded-xl shadow-sm border border-slate-100 cursor-pointer active:scale-95 transition-transform">
+              <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mb-1">
+                <i data-lucide="hammer" class="w-5 h-5"></i>
+              </div>
+              <span class="text-[11px] font-medium text-slate-700">Carpenter</span>
+            </div>
+
+            <div onclick="selectTrade('Tiler')" class="flex flex-col items-center p-2.5 bg-white rounded-xl shadow-sm border border-slate-100 cursor-pointer active:scale-95 transition-transform">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1">
+                <i data-lucide="grid" class="w-5 h-5"></i>
+              </div>
+              <span class="text-[11px] font-medium text-slate-700">Tiler</span>
+            </div>
+
+            <div onclick="selectTrade('Electrician')" class="flex flex-col items-center p-2.5 bg-white rounded-xl shadow-sm border border-slate-100 cursor-pointer active:scale-95 transition-transform">
+              <div class="w-10 h-10 rounded-full bg-yellow-50 text-yellow-600 flex items-center justify-center mb-1">
+                <i data-lucide="zap" class="w-5 h-5"></i>
+              </div>
+              <span class="text-[11px] font-medium text-slate-700">Electrician</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Artisans List -->
+        <div>
+          <div class="flex justify-between items-center mb-2.5">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+              Top Rated Near You
+            </h3>
+            <span class="text-[11px] text-slate-400">Live Availability</span>
+          </div>
+
+          <div class="space-y-3">
+            <div onclick="bookArtisan('Kwame Mensah', 'Plumber')" class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-3 cursor-pointer active:scale-95 transition-transform">
+              <img src="https://images.unsplash.com/photo-1540569014015-19a7be504e3a?w=150&auto=format&fit=crop&q=80" class="w-14 h-14 rounded-xl object-cover" alt="Artisan">
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <h4 class="font-bold text-slate-800 text-xs flex items-center gap-1">
+                    Kwame Mensah
+                    <i data-lucide="badge-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                  </h4>
+                  <span class="text-xs font-extrabold text-emerald-800">GH₵ 120<span class="text-[9px] font-normal text-slate-400">/hr</span></span>
+                </div>
+                <p class="text-[11px] text-slate-500 mb-1">Plumber • Osu, Accra (2.4 km)</p>
+                <div class="flex items-center gap-3 text-[10px]">
+                  <span class="flex items-center gap-1 font-semibold text-amber-600">
+                    <i data-lucide="star" class="w-3 h-3 fill-amber-400 text-amber-400"></i> 4.9 (48)
+                  </span>
+                  <span class="text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-medium">Ghana Card Verified</span>
+                </div>
+              </div>
+            </div>
+
+            <div onclick="bookArtisan('Abena Osei', 'AC Repair')" class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-3 cursor-pointer active:scale-95 transition-transform">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80" class="w-14 h-14 rounded-xl object-cover" alt="Artisan">
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <h4 class="font-bold text-slate-800 text-xs flex items-center gap-1">
+                    Abena Osei
+                    <i data-lucide="badge-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                  </h4>
+                  <span class="text-xs font-extrabold text-emerald-800">GH₵ 150<span class="text-[9px] font-normal text-slate-400">/hr</span></span>
+                </div>
+                <p class="text-[11px] text-slate-500 mb-1">AC & Refrigeration • Airport (4.1 km)</p>
+                <div class="flex items-center gap-3 text-[10px]">
+                  <span class="flex items-center gap-1 font-semibold text-amber-600">
+                    <i data-lucide="star" class="w-3 h-3 fill-amber-400 text-amber-400"></i> 4.8 (32)
+                  </span>
+                  <span class="text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-medium">MoMo Escrow Ready</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: ARTISANS -->
+      <div id="page-artisans" class="page-view p-4 space-y-3 hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-2">Nearby Ghana Artisans</h2>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 flex gap-2 items-center text-xs mb-3">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+          <input type="text" placeholder="Search plumber, electrician..." class="w-full bg-transparent outline-none">
+        </div>
+        <p class="text-xs text-slate-500">Showing available technicians in Accra Central...</p>
+      </div>
+
+      <!-- PAGE: BOOKINGS -->
+      <div id="page-bookings" class="page-view p-4 space-y-3 hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-2">My Bookings</h2>
+        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center py-8">
+          <i data-lucide="calendar" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+          <p class="text-xs text-slate-600 font-semibold">No active service bookings</p>
+          <p class="text-[11px] text-slate-400 mt-1">Book an artisan from the home tab to start.</p>
+        </div>
+      </div>
+
+      <!-- PAGE: WALLET -->
+      <div id="page-wallet" class="page-view p-4 space-y-3 hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-2">MoMo Escrow Wallet</h2>
+        <div class="bg-emerald-900 text-white p-4 rounded-2xl shadow">
+          <p class="text-xs text-emerald-200">Escrow Balance</p>
+          <p class="text-2xl font-black text-amber-400 mt-1">GH₵ 0.00</p>
+          <p class="text-[10px] text-emerald-300 mt-2">Funds are safely held until service is completed.</p>
+        </div>
+        <button onclick="showAlert('MoMo deposit modal opening...')" class="w-full bg-amber-400 font-bold text-emerald-950 py-2.5 rounded-xl text-xs shadow mt-2">Deposit Funds via Mobile Money</button>
+      </div>
+
+      <!-- PAGE: VERIFY -->
+      <div id="page-verify" class="page-view p-4 space-y-3 hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-2">Ghana Card Verification</h2>
+        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-xs space-y-3">
+          <p class="text-slate-600">Verify your Ghana Card to build trust and activate instant MoMo payouts.</p>
+          <button onclick="showAlert('Ghana Card scanner opening...')" class="w-full bg-emerald-800 text-white font-bold py-2.5 rounded-xl shadow">Scan Ghana Card</button>
+        </div>
+      </div>
+
+      <!-- ARTISAN VIEW (Initially Hidden) -->
+      <div id="view-artisan" class="p-4 space-y-4 hidden">
+        <div class="bg-slate-800 text-white p-4 rounded-2xl shadow">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs text-slate-400">Today's Earnings</span>
+            <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-medium">Online</span>
+          </div>
+          <div class="text-2xl font-black text-amber-400">GH₵ 450.00</div>
+          <p class="text-[11px] text-slate-400 mt-1">3 Completed jobs in Accra</p>
+        </div>
+
+        <h3 class="text-sm font-bold text-slate-800">Available Job Requests</h3>
+
+        <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-100">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h4 class="font-bold text-slate-800 text-xs">Leaking Pipe Repair</h4>
+              <p class="text-[11px] text-slate-500">East Legon, Accra</p>
+            </div>
+            <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">GH₵ 180</span>
+          </div>
+          <p class="text-xs text-slate-600 mb-3 bg-slate-50 p-2 rounded-lg">"Main kitchen sink pipe leaking water onto tiles."</p>
+          <div class="flex gap-2">
+            <button onclick="showAlert('Job Accepted! Contacting client via MoMo Escrow...')" class="flex-1 bg-emerald-800 text-white font-bold py-2 text-xs rounded-xl shadow">Accept Job</button>
+            <button onclick="showAlert('Job Declined.')" class="px-3 border border-slate-200 text-slate-500 text-xs rounded-xl font-medium">Decline</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bg-white border-t border-slate-200 px-6 py-2.5 fixed sm:absolute bottom-0 left-0 right-0 z-40 flex justify-between items-center">
+      <button id="nav-home" onclick="switchPage('home')" class="flex flex-col items-center text-emerald-800 active-tab">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[10px] font-bold mt-0.5">Home</span>
+      </button>
+
+      <button id="nav-artisans" onclick="switchPage('artisans')" class="flex flex-col items-center text-slate-400">
+        <i data-lucide="search" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium mt-0.5">Artisans</span>
+      </button>
+
+      <button id="nav-bookings" onclick="switchPage('bookings')" class="flex flex-col items-center text-slate-400">
+        <i data-lucide="briefcase" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium mt-0.5">Bookings</span>
+      </button>
+
+      <button id="nav-wallet" onclick="switchPage('wallet')" class="flex flex-col items-center text-slate-400">
+        <i data-lucide="wallet" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium mt-0.5">Wallet</span>
+      </button>
+
+      <button id="nav-verify" onclick="switchPage('verify')" class="flex flex-col items-center text-slate-400">
+        <i data-lucide="shield-check" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium mt-0.5">Verify</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Toggle Role Function
+    function setRole(role) {
+      const pageHome = document.getElementById('page-home');
+      const artisanView = document.getElementById('view-artisan');
+      const btnCustomer = document.getElementById('toggle-customer');
+      const btnArtisan = document.getElementById('toggle-artisan');
+
+      if (role === 'customer') {
+        pageHome.classList.remove('hidden');
+        artisanView.classList.add('hidden');
+        
+        btnCustomer.className = "px-3 py-1 rounded-full bg-amber-400 text-emerald-950 shadow transition-all duration-200";
+        btnArtisan.className = "px-3 py-1 rounded-full text-emerald-200 hover:text-white transition-all duration-200";
+      } else {
+        // Hide all customer sub-pages
+        document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+        artisanView.classList.remove('hidden');
+
+        btnArtisan.className = "px-3 py-1 rounded-full bg-amber-400 text-emerald-950 shadow transition-all duration-200";
+        btnCustomer.className = "px-3 py-1 rounded-full text-emerald-200 hover:text-white transition-all duration-200";
+      }
+    }
+
+    // Tab Switching Navigation
+    function switchPage(pageId) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+      document.getElementById('view-artisan').classList.add('hidden');
+
+      const target = document.getElementById('page-' + pageId);
+      if (target) target.classList.remove('hidden');
+
+      // Update Nav Highlights
+      document.querySelectorAll('nav button').forEach(btn => {
+        btn.classList.remove('text-emerald-800', 'active-tab');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeNav = document.getElementById('nav-' + pageId);
+      if (activeNav) {
+        activeNav.classList.remove('text-slate-400');
+        activeNav.classList.add('text-emerald-800', 'active-tab');
+      }
+    }
+
+    // Helper Action Alerts
+    function showAlert(msg) {
+      alert(msg);
+    }
+
+    function selectTrade(trade) {
+      alert('Filtering nearby verified ' + trade + 's in Accra Central...');
+      switchPage('artisans');
+    }
+
+    function bookArtisan(name, trade) {
+      alert('Selected ' + name + ' (' + trade + '). Opening MoMo Escrow booking window...');
+    }
+  </script>
+</body>
+</html>
